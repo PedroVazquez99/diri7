@@ -1,6 +1,8 @@
 import { MouseEventHandler, useContext, useState } from "react";
 import { MenuItem } from "../entities/MenuItem";
 import { foodItemsContext } from "../App";
+import { useDispatch } from "react-redux";
+import { decrementQuantity } from "../slices/MenuItemSlice";
 import '../styles/foodOrder.css'
 
 interface FoodOrderProps {
@@ -15,12 +17,14 @@ function FoodOrder(props: FoodOrderProps) {
   const [isOrdered, setIsOrdered] = useState(false); // si está pedido
   const menuItems: MenuItem[] = useContext(foodItemsContext);
 
+  const dispatch = useDispatch();
+
   const handleClick = (event: React.FormEvent) => {
     event.preventDefault(); // Evita el comportamiento por defecto del formulario
     setIsOrdered(true);
     menuItems.map((item: MenuItem) => {
       if (item.id === props.food.id) {
-        item.quantity = item.quantity - quantity;
+        dispatch(decrementQuantity({ id: props.food.id, quantity }));
       }
     });
   };

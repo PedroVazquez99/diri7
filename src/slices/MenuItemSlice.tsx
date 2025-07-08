@@ -43,10 +43,16 @@ const foodSlice = createSlice({
         addFood: (state, action: PayloadAction<MenuItem>) => {
             state.push(action.payload);
         },
+        decrementQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+            const item = state.find(i => i.id === action.payload.id);
+            if (item) {
+                item.quantity -= action.payload.quantity;
+            }
+        },
     },
 });
 
-export const { addFood } = foodSlice.actions;
+export const { addFood, decrementQuantity } = foodSlice.actions;
 
 export const store = configureStore({
     reducer: {
